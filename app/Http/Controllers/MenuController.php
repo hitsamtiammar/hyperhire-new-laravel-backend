@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\MenuResource;
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use Validator;
 
 class MenuController extends Controller
 {
-    //
+
+    private function validateInput(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            'name' => ['required']
+        ]);
+        return $validated;
+    }
 
     public function index($id)
     {
@@ -32,6 +40,14 @@ class MenuController extends Controller
 
     public function create(Request $request)
     {
+        $validated = $this->validateInput($request);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'status' => 0,
+                'errors' => $validated->errors()
+            ], 400);
+        }
         $name = $request->input('name');
         $parent = $request->input('parent', null);
 
@@ -48,6 +64,14 @@ class MenuController extends Controller
 
     public function update(Request $request, $id)
     {
+        $validated = $this->validateInput($request);
+        if ($validated->fails()) {
+            return response()->json([
+                'status' => 0,
+                'errors' => $validated->errors()
+            ], 400);
+        }
+
         $name = $request->input('name');
         $menu = Menu::find($id);
 
