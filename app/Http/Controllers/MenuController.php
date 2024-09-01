@@ -34,7 +34,7 @@ class MenuController extends Controller
 
         return [
             'status' => 1,
-            'menus' => new MenuResource($menus)
+            'menus' => $menus
         ];
     }
 
@@ -58,7 +58,7 @@ class MenuController extends Controller
 
         return [
             'status' => 1,
-            'menu' => new MenuResource($new_menu)
+            'menu' => $new_menu
         ];
     }
 
@@ -83,7 +83,6 @@ class MenuController extends Controller
         }
 
         $menu->name = $name;
-
         $menu->save();
 
         return [
