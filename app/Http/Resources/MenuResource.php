@@ -26,7 +26,7 @@ class MenuResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'parent' => $this->parent,
+            'parent' => isset($this->parentData) ? $this->parentData->name : null,
             'children' => self::collection($mapped_children),
             'depth' => $depth
         ];
